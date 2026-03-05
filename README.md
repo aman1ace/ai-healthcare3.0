@@ -67,7 +67,7 @@ Risk Prediction + Recommendations
 Clone the repository
 
 
-git clone https://github.com/YOUR-USERNAME/AI-Health-Risk-Predictor.git
+git clone https://github.com/aman1ace/ai-healthcare3.0.git
 
 
 Move into the project folder
