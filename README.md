@@ -1,8 +1,10 @@
-# AI Health Risk Predictor
+# HealthGuard AI
 
-An AI-powered healthcare prediction system that predicts **Heart Disease Risk** and **Diabetes Risk** using machine learning models.  
+An AI-powered healthcare assistant that predicts disease risk,
+suggests preventive measures, diet plans, hospitals,
+and government health schemes. 
 
-The system also provides:
+The system provides:
 
 - Preventive health measures
 - Personalized diet recommendations
