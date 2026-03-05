@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AI Health Risk Predictor</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Segoe UI;
+        }
+
+        body {
+            margin: 0;
+            background: #1c1d24;
+            color: #e6e6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 900px;
+            background: #262833;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4cc9f0;
+            margin-bottom: 25px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            background: #33364a;
+            padding: 10px;
+            border-radius: 6px;
+            color: #4cc9f0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        input,
+        select {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #3a3d52;
+            color: white;
+        }
+
+        input::placeholder {
+            color: #bbb;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #36d1dc, #5b86e5);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .result {
+            margin-top: 25px;
+            background: #1f212b;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .risk-bar {
+            height: 18px;
+            background: #444;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .bar {
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .heart {
+            background: #ff4d6d;
+        }
+
+        .diabetes {
+            background: #4cc9f0;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>AI Health Risk Predictor</h1>
+
+        <!-- LOCATION -->
+
+        <div class="section">
+
+            <h2>Select State</h2>
+
+            <select id="state">
+                <option value="Delhi">Delhi</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Karnataka">Karnataka</option>
+            </select>
+
+        </div>
+
+
+        <!-- HEART DATA -->
+
+        <div class="section">
+
+            <h2>Heart Health Details</h2>
+
+            <div class="grid">
+
+                <input id="age" placeholder="Age">
+
+                <select id="sex">
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+
+                <input id="cp" placeholder="Chest Pain Type">
+
+                <input id="trestbps" placeholder="Blood Pressure">
+
+                <input id="chol" placeholder="Cholesterol">
+
+                <input id="fbs" placeholder="Fasting Blood Sugar">
+
+                <input id="restecg" placeholder="ECG">
+
+                <input id="thalach" placeholder="Max Heart Rate">
+
+                <input id="exang" placeholder="Exercise Angina">
+
+                <input id="oldpeak" placeholder="Oldpeak">
+
+                <input id="slope" placeholder="Slope">
+
+                <input id="ca" placeholder="CA">
+
+                <input id="thal" placeholder="Thal">
+
+            </div>
+
+        </div>
+
+
+        <!-- DIABETES -->
+
+        <div class="section">
+
+            <h2>Diabetes Details</h2>
+
+            <div class="grid">
+
+                <input id="pregnancies" placeholder="Pregnancies">
+
+                <input id="glucose" placeholder="Glucose">
+
+                <input id="bloodpressure" placeholder="Blood Pressure">
+
+                <input id="skinthickness" placeholder="Skin Thickness">
+
+                <input id="insulin" placeholder="Insulin">
+
+                <input id="bmi" placeholder="BMI">
+
+                <input id="dpf" placeholder="Diabetes Pedigree">
+
+            </div>
+
+        </div>
+
+
+        <button onclick="predict()">Predict Health Risk</button>
+
+        <div class="result" id="result"></div>
+
+    </div>
+
+
+    <script>
+
+        async function predict() {
+
+            let data = {
+
+                state: state.value,
+
+                age: parseInt(age.value),
+                sex: parseInt(sex.value),
+                cp: parseInt(cp.value),
+                trestbps: parseInt(trestbps.value),
+                chol: parseInt(chol.value),
+                fbs: parseInt(fbs.value),
+                restecg: parseInt(restecg.value),
+                thalach: parseInt(thalach.value),
+                exang: parseInt(exang.value),
+                oldpeak: parseFloat(oldpeak.value),
+                slope: parseInt(slope.value),
+                ca: parseInt(ca.value),
+                thal: parseInt(thal.value),
+
+                pregnancies: parseInt(pregnancies.value),
+                glucose: parseInt(glucose.value),
+                bloodpressure: parseInt(bloodpressure.value),
+                skinthickness: parseInt(skinthickness.value),
+                insulin: parseInt(insulin.value),
+                bmi: parseFloat(bmi.value),
+                dpf: parseFloat(dpf.value)
+
+            };
+
+
+            let response = await fetch("http://127.0.0.1:8000/predict/all", {
+
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+
+            });
+
+            let result = await response.json();
+
+
+            document.getElementById("result").innerHTML = `
+
+<h3>Prediction Results</h3>
+
+Heart Risk: ${result.heart_risk}%
+
+<div class="risk-bar">
+<div class="bar heart" style="width:${result.heart_risk}%"></div>
+</div>
+
+Diabetes Risk: ${result.diabetes_risk}%
+
+<div class="risk-bar">
+<div class="bar diabetes" style="width:${result.diabetes_risk}%"></div>
+</div>
+
+<h3>Preventive Measures</h3>
+<ul>
+${result.preventive_measures.map(x => "<li>" + x + "</li>").join("")}
+</ul>
+
+<h3>Diet Plan</h3>
+<ul>
+${result.diet_plan.map(x => "<li>" + x + "</li>").join("")}
+</ul>
+
+<h3>Recommended Hospitals</h3>
+<ul>
+${result.hospitals.map(h => "<li>" + h.name + " — ₹" + h.price + "</li>").join("")}
+</ul>
+
+<h3>Government Schemes</h3>
+<ul>
+${result.schemes.map(s => "<li>" + s + "</li>").join("")}
+</ul>
+
+`;
+
+        }
+
+    </script>
+
+</body>
+
+</html>
